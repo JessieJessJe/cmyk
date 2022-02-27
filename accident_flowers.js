@@ -18,7 +18,7 @@ const CMYK = new Map([
 
   ]);
 
-const grid_w = 100, grid_h = 100, width = 1200, height = 600;
+const grid_w = 100, grid_h = 100, width = 1010, height = 600;
 const grid_counts = 10; //10 color blocks for each row
 
 let isSetup = false;
@@ -144,9 +144,9 @@ const drawMainCanvas = (sketch) =>{
               let session = 240;
               let players = new Array(10).fill('');
 
-              grid_margin = grid_h * 0.40;
-              grid_stroke = grid_h * 0.10;
-              r = grid_h / 1.8;
+              grid_margin = grid_h * 0.52;
+              grid_stroke = grid_h * 0.30;
+              r = grid_h / 1.5;
 
               if(sketch.partyIsHost()){
 
@@ -164,23 +164,16 @@ const drawMainCanvas = (sketch) =>{
                 for (let j=0; j<grid_counts; j++){
                   c = sketch.color(shared.gridColor[i][j])
                   // s = i === 0 ? grid_stroke: grid_stroke/2;
-                  sketch.drawingContext.setLineDash([5, i*10, 5, i*10]);
+
                
-                  sketch.stroke(c )
-                  sketch.noFill();
-                  sketch.strokeWeight(grid_stroke /  (i+1))
-                  // sketch.stroke(c)
-                  // sketch.noFill()
-
-                  sketch.ellipse(j*grid_w + grid_w/2 + grid_margin/2, 
-                                  height/2 - i*grid_h , 
-                                  grid_w - grid_margin, 
-                                  grid_h - grid_margin )
-
-                  }
-
-             
-         
+                  sketch.drawingContext.setLineDash([5, i*20, 5, i*20]);
+                  
+            
+                  sketch.strokeWeight(grid_stroke)
+                  sketch.stroke(c)
+                  sketch.noFill()
+                  sketch.ellipse(j*grid_w + grid_w/2 + grid_margin/2, height/2 + grid_w/2 + grid_margin/2, grid_w - grid_margin, grid_h - grid_margin )
+                }
               }
 
               //players
@@ -193,24 +186,17 @@ const drawMainCanvas = (sketch) =>{
               for (let j=0; j<grid_counts; j++){
 
                 if (players[j] !== ''){
-                  c = sketch.color(CMYK.get(players[j]))
-
-
-                  // sketch.strokeWeight(grid_stroke)
-                  // sketch.stroke(c)
-                  // sketch.noFill()
-
          
+
+                  c = sketch.color(CMYK.get(players[j]))
                   sketch.fill(c)
                   sketch.noStroke()
-                  sketch.ellipse(j*grid_w + grid_w/2 + grid_margin/2 , 
-                                  height/2, 
-                                  r, r)
+                  sketch.ellipse(j*grid_w + grid_w/2 + grid_margin/2 , height/2 + grid_w/2 + grid_margin/2, r, r)
                 }
               }
 
 
-
+        
       };
 
       sketch.displayGameEnd = function(){
@@ -313,7 +299,6 @@ const drawMainCanvas = (sketch) =>{
 
         return GRIDCOLOR;
       }
-
   
 }//end of drawMainCanvas
 
