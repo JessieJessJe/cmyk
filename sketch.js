@@ -169,7 +169,7 @@ const drawMainCanvas = (sketch) =>{
               person.score += 10;
               break;
             case 2:
-              person.score += 5;
+              person.score += 2;
               break;
             case 1:
               person.score += 1;
