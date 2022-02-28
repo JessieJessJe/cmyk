@@ -31,10 +31,13 @@ let hostTimeStamp = 0, rounds = 5;
 
 let GRIDCOLOR = []; //color code for each block, set by the host player
 let players = [];
+let img;
 
 const drawMainCanvas = (sketch) =>{
 
   sketch.preload = function(){
+
+    img = sketch.loadImage('sketch3.png');
   
     sketch.partyConnect(
       "wss://deepstream-server-1.herokuapp.com",
@@ -93,7 +96,7 @@ const drawMainCanvas = (sketch) =>{
 
       sketch.draw = function() {
         sketch.clear();
-        sketch.background(220);
+        sketch.background(255);
 
         if (shared.state === "game_init"){
 
@@ -127,10 +130,8 @@ const drawMainCanvas = (sketch) =>{
 
       sketch.displayOnboard = function(){
 
-        
-        sketch.background(sketch.color(51));
-        // sketch.fill(getCMYKbyIndex(me.colorIndex))
-        // sketch.rect(cols[0], rows[0],10,10)
+        sketch.image(img, 0, 0, width, height);
+        // sketch.background(sketch.color(255));
 
 
       };
@@ -249,7 +250,7 @@ const drawMainCanvas = (sketch) =>{
                   sketch.noFill();
                   sketch.strokeWeight(grid_stroke /  (i+2))
         
-
+             
                   sketch.ellipse(j*grid_w + grid_w/2 + grid_margin/2, 
                                   height/2 - i*grid_h + shared.offset , 
                                   grid_w - grid_margin, 
@@ -367,8 +368,7 @@ const drawMainCanvas = (sketch) =>{
       };
 
       sketch.keyPressed = function() {
-        let step = 20;
-        
+
         if(shared.state === "game_init"){
 
           if (sketch.keyCode === sketch.ENTER) {
@@ -396,6 +396,17 @@ const drawMainCanvas = (sketch) =>{
       
       }
 
+      sketch.assignPlayerColor = function(){
+
+        let template = shuffle(['c', 'm', 'y'])
+
+        ppl.forEach((person, idx)=>{
+
+          person.color = template[idx % 3]
+
+        })
+      }
+
       sketch.updateSharedState = async function(){
 
         if (shared.state === "game_init" ){
@@ -416,6 +427,7 @@ const drawMainCanvas = (sketch) =>{
 
             if (isReadyResult){ 
 
+              sketch.assignPlayerColor();
 
               shared.state = "game_start"
 
