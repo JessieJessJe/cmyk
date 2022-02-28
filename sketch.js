@@ -143,7 +143,7 @@ const drawMainCanvas = (sketch) =>{
         let player_profile = ppl.filter( (person) => person.state === "onboarding" )
                                 .map( (person) => person.id). join(` `);
         
-        sketch.text( `Waiting for Player ${player_profile} to start`, width/2, height/2)
+        sketch.text( `Waiting for ${player_profile} to start`, width/2, height/2)
    
         
       };
