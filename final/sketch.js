@@ -45,7 +45,7 @@ const drawMainCanvas = (sketch) =>{
 
   sketch.preload = function(){
 
-    img = sketch.loadImage('sketch3.png');
+    img = sketch.loadImage('sketch4.png');
   
     sketch.partyConnect(
       "wss://deepstream-server-1.herokuapp.com",
