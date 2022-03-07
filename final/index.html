@@ -4,11 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <script src="p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5.party@latest/dist/p5.party.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Playfair+Display:wght@500&display=swap');
+        </style>
+    <link rel="stylesheet" href="style4design.css">
+    <link rel="stylesheet" href="style4sketch.css">
+
+    <title>CMYK</title>
 </head>
 
 <body>
+
+
+    <div id="bg">
+        <div id="bg_block_1"></div>
+        <div id="bg_block_2"></div>
+        <div id="bg_block_3"></div>
+        <div id="bg_block_4"></div>
+      
+    </div>
+
     <svg id="design-paper" width="100%" height="100%">
 
         <filter id="xor"  
@@ -50,11 +67,20 @@
     
 
     <div id="design-front">
-
-        
+  
     </div>
 
+
+      
+  <div id="main">
+    <div id="title"><h1>CMYK</h1></div>
+    <div id="mainCanvas"></div>
+    <div id="scoreCanvas"></div>
+  
+  </div>
+
     <script src="design.js"></script>
+    <script src="sketch.js"></script>
     
 </body>
 </html>

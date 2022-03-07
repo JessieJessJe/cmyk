@@ -7,7 +7,7 @@ const paperDotsCount = Math.floor (WindowHeight / 36 )
 const paperDotsH = 36;
 const paperDotsW = 52
 
-const paperW = 1000/1512 * WindowWidth;
+const paperW = 1100/1512 * WindowWidth;
 const paperMargin = (WindowWidth - paperW) / 2;
 
 const CanvasFront = document.getElementById('design-front')
