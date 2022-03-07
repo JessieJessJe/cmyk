@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <svg id="design-paper" width="100%" height="100%">
+
+        <filter id="xor"  
+                 >
+
+        <feImage href="./dots/rect.png" x="-13px" y="0px" width="52px" height="36px"/>
+
+         <!-- <feComposite in="SourceGraphic" in2="BackgroundImage" result="comp"
+               operator="xor"/> -->
+               <feComposite in2="SourceGraphic" result="comp"
+               operator="xor"/>
+        </filter>
+
+    <defs>
+    <g id="single-dot">
+        <g transform="translate(0,0)">
+    
+        <rect x="0" y="0" width="13" height="36" fill="white"/>
+        <rect x="39" y="0" width="13" height="36" fill="white"/>
+        <rect x="0" y="0" width="52" height="10" fill="white"/>
+
+        </g>
+
+        <g transform="translate(13,10)">
+
+        <!-- <rect fill-rule="nonzero" x="-13" y="0" width="52" height="36" fill="blue" filter="url(#xor)" /> -->
+        <circle  cx="13" cy="13" r="13" fill="red" filter="url(#xor)"/>
+     
+        </g>
+    </g>
+
+
+    </defs>
+
+
+    <!-- <use xlink:href="#single-dot" x="120" y="60"/> -->
+    </svg>
+
+    
+
+    <div id="design-front">
+
+        
+    </div>
+
+    <script src="design.js"></script>
+    
+</body>
+</html>
