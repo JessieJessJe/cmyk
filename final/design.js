@@ -63,14 +63,14 @@ const dotC_1 = document.createElement("img")
 dotC_1.className = "dots"
 dotC_1.src = "./dots/cyan.png"
 dotC_1.style.left = `${855/1512 * WindowWidth}px`;
-dotC_1.style.top = `${-400/982 * WindowHeight}px`;
+dotC_1.style.top = `${-500/982 * WindowHeight}px`;
 CanvasFront.appendChild(dotC_1)
 
 const dotC_2 = document.createElement("img")
 dotC_2.className = "dots"
 dotC_2.src = "./dots/cyan.png"
 dotC_2.style.left = `${1112/1512 * WindowWidth}px`;
-dotC_2.style.top = `${147/982 * WindowHeight}px`;
+dotC_2.style.top = `${57/982 * WindowHeight}px`;
 CanvasFront.appendChild(dotC_2)
 
 const dotY = document.createElement("img")
@@ -98,6 +98,8 @@ dots.forEach((dot)=>{
 
 
 CanvasFront.appendChild(paper)
+
+window.onresize = function(){ location.reload(); }
 
 
 //https://blog.q-bit.me/how-to-create-svg-elements-with-javascript/

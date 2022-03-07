@@ -1,4 +1,6 @@
 
+
+
 const CMYK = new Map([
     ['c', 'cyan' ],
     ['m','magenta' ],
@@ -20,9 +22,15 @@ const CMYK = new Map([
 
 const CMYK_SET = ['c', 'm', 'y', 'cm', 'cy', 'my', 'cmy']
 
-const grid_w = 100, grid_h = 100, width = 1050, height = 600;
+const width = 1050 * WindowWidth / 1512, height = 600 * width / 1050 ;
+const grid_w = 100 / 1050 * width, grid_h = grid_w;
 const grid_counts = 10; //10 color blocks for each row
-let offset = 0, unit = grid_h/180; //each round, plays have 3 seconds to move
+
+//each session, plays have  -- 3 seconds to get ready -- 5 seconds to move -- 2 seconds for result
+let move_length = 300,  session = 600; // multiply by 60 frames/sec
+
+let offset = 0
+let unit = 1; //each round, plays have 3 seconds to move
 
 let isSetup = false;
 let me, ppl, shared, canvas;
@@ -144,6 +152,9 @@ const drawMainCanvas = (sketch) =>{
                                 .map( (person) => person.id). join(` `);
         
         sketch.text( `Waiting for ${player_profile} to start`, width/2, height/2)
+
+        sketch.textSize(16)
+        sketch.text( `Or press ENTER to return`, width/2, height/2 + 48)
    
         
       };
@@ -195,7 +206,7 @@ const drawMainCanvas = (sketch) =>{
               players = [];
     
               let c, grid_margin, r, grid_stroke;
-              let session = 540;
+      
 
               grid_margin = grid_h * 0.40;
               grid_stroke = grid_h * 0.10;
@@ -221,11 +232,9 @@ const drawMainCanvas = (sketch) =>{
                   setTimeout(()=>{
                     shared.move = false;
 
-                //winnder effect
-                //calculate score
                     sketch.endOfRound();
 
-                  }, 6000)
+                  }, 8000)  //3"ready + 5"move = 8"
                   
                  }else{
 
@@ -240,10 +249,15 @@ const drawMainCanvas = (sketch) =>{
 
               if (shared.move){
 
-                if (sketch.partyIsHost()){ shared.offset += unit; }
-                offset = shared.offset
-    
+                if (sketch.partyIsHost()){ 
+                  shared.offset += unit; 
+                  
+                }
+
+                offset = shared.offset * grid_h /  move_length;
+                
               }
+
 
               //display color blocks
               for (let i=0; i<3; i++){
@@ -258,7 +272,7 @@ const drawMainCanvas = (sketch) =>{
         
              
                   sketch.ellipse(j*grid_w + grid_w/2 + grid_margin/2, 
-                                  height/2 - i*grid_h + shared.offset , 
+                                  height/2 - i*grid_h + offset , 
                                   grid_w - grid_margin, 
                                   grid_h - grid_margin )
 
@@ -296,7 +310,7 @@ const drawMainCanvas = (sketch) =>{
               }
 
               //display players name
-              sketch.textSize(20)
+              sketch.textSize(30)
               ppl.forEach((person)=>{
  
                 sketch.text( person.id, person.pos*grid_w + grid_w/2 + grid_margin/2 , 
@@ -306,7 +320,7 @@ const drawMainCanvas = (sketch) =>{
 
               sketch.fill(0)
               sketch.text( '***', me.pos*grid_w + grid_w/2 + grid_margin/2 , 
-                height/2 + grid_h * 2 - grid_margin + 25, 
+                height/2 + grid_h * 2 - grid_margin + 30, 
                 )
               
 
@@ -341,22 +355,26 @@ const drawMainCanvas = (sketch) =>{
 
                       let msg;
 
-                      switch (players[pos].length){
-                        case 1:
-                          msg = '+1';
-                          msg2 = `You've got this!`
-                          break;
-                        case 2:
-                          msg = '+5';
-                          msg2 = `└( ▼▼)┐ Excellent!`;
-                          break;
-                        case 3:
-                          msg = '+10';
-                          msg2 = `//(*▼▽▼)∩// Terrific!`
-                          break;
+                      if (players[pos]){
+                        switch (players[pos].length){
+                          case 1:
+                            msg = '+1';
+                            msg2 = `You've got this!`
+                            break;
+                          case 2:
+                            msg = '+5';
+                            msg2 = `└( ▼▼)┐ Excellent!`;
+                            break;
+                          case 3:
+                            msg = '+10';
+                            msg2 = `//(*▼▽▼)∩// Terrific!`
+                            break;
+                        }
+  
+                        sketch.text(msg , pos * grid_w + grid_w/2 + grid_margin/2, height/2 + grid_h )
                       }
 
-                      sketch.text(msg , pos * grid_w + grid_w/2 + grid_margin/2, height/2 + grid_h )
+
        
                     }) 
                 sketch.text(msg2 , width / 2, height * 0.12 )
@@ -373,7 +391,7 @@ const drawMainCanvas = (sketch) =>{
         let player_profile = ppl;
         player_profile.sort( (a,b)=> b.score - a.score)
 
-        sketch.text( `Player ${player_profile[0].id} Wins!`, width/2, height/2)
+        sketch.text( `${player_profile[0].id} Wins!`, width/2, height/2)
 
         if(sketch.partyIsHost()){
           setTimeout(() => {
@@ -394,19 +412,19 @@ const drawMainCanvas = (sketch) =>{
 
           if (sketch.keyCode === sketch.ENTER) {
       
-            me.state = "ready";
+            me.state = me.state === "ready" ? "onboarding" : "ready";
         
           }
         }
 
 
         if (shared.state === "game_start" && shared.move === true){
-          if (sketch.keyCode === sketch.LEFT_ARROW){
+          if (sketch.keyCode === sketch.LEFT_ARROW || sketch.keyCode === 65){
             me.pos = me.pos-1 > -1 ? me.pos-1 : 0;
          
           }
 
-          if (sketch.keyCode === sketch.RIGHT_ARROW){
+          if (sketch.keyCode === sketch.RIGHT_ARROW || sketch.keyCode === 68){
             me.pos = me.pos+1 < grid_counts ? me.pos+1 : grid_counts-1;
     
           }
@@ -587,13 +605,15 @@ const drawScoreCanvas = function(sketch){
   const height_rec = 20;
 
 
+ 
+
   sketch.setup = function() {
     sketch.createCanvas(200, 200);
 
   };
 
   sketch.score_to_width = function(w){
-    const full_score = 50;
+    const full_score = 40;
     const full_width = 150;
   
     return Math.trunc( w /full_score * full_width) + 1
@@ -608,6 +628,7 @@ const drawScoreCanvas = function(sketch){
         let s = p.id === me.id ? `Player ${p.id} (*** you're here)` : `Player ${p.id}`;
   
         sketch.fill(0);
+        sketch.textSize(12)
         sketch.text(s, 0, padding * (i+1) * 2 - padding);  
         sketch.rect(0, padding * (i+1) * 2 - 15, w, height_rec);
   
